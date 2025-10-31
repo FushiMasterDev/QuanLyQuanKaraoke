@@ -132,11 +132,11 @@ public:
     friend ostream &operator<<(ostream &out, const Phong &p)
     {
         out << "Ma phong: " << p.ma
-            << ", Loai: " << loaiPhong(p.loaiphong)
-            << ", Gia/1h: " << p.gia
-            << ", Suc chua: " << p.suc_chua
-            << ", Trang thai: " << trangThai(p.trangthai)
-            << ", Tong doanh thu: " << p.tong_doanh_thu;
+            << "| Loai: " << loaiPhong(p.loaiphong)
+            << "| Gia/1h: " << p.gia
+            << "| Suc chua: " << p.suc_chua
+            << "| Trang thai: " << trangThai(p.trangthai)
+            << "| Tong doanh thu: " << p.tong_doanh_thu;
         return out;
     }
 
@@ -195,10 +195,10 @@ public:
 class KhachHang
 {
 private:
-    vector<Phong> dsPhong;
     int ma;
     int SDT;
     string ten;
+    vector<Phong *> dsphong;
 
 public:
     KhachHang() {}
@@ -221,10 +221,64 @@ public:
         return in;
     }
 
-    friend ostream &operator<<(ostream &out, KhachHang &K)
+    friend ostream &operator<<(ostream &out, const KhachHang &K)
     {
-        out << "Ma: " << K.ma << ", Ten: " << K.ten << ", SDT: " << K.SDT;
+        out << "Ma: " << K.ma << "| Ten: " << K.ten << "| SDT: " << K.SDT;
         return out;
+    }
+
+    void datPhong(Phong *p)
+    {
+        dsphong.push_back(p);
+    }
+
+    bool traPhong(Phong *p)
+    {
+        for (auto it = dsphong.begin(); it != dsphong.end(); ++it)
+        {
+            if (*it == p)
+            {
+                dsphong.erase(it);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool coPhong(Phong *p)
+    {
+        for (auto x : dsphong)
+        {
+            if (x == p)
+                return true;
+        }
+        return false;
+    }
+
+    // Danh sach phong dang cho thue
+    void hienthiPhongDangThue()
+    {
+        if (dsphong.empty())
+            cout << "Khach hang khong thue phong nao.\n";
+        else
+        {
+            cout << "Cac phong khach da va dang thue:\n";
+            for (auto p : dsphong)
+            {
+                cout << "- Phong " << p->getMa() << " (" << loaiPhong(p->getLoai()) << ")\n";
+            }
+        }
+    }
+
+    // getter
+    int getMax()
+    {
+        return ma;
+    }
+
+    string getTen()
+    {
+        return ten;
     }
 };
 
@@ -425,7 +479,7 @@ public:
     }
 
     // Dat Phong
-    void datPhong()
+    void datPhong(KhachHang &kh)
     {
         if (dsPhong.empty())
         {
@@ -444,7 +498,8 @@ public:
                 if (p.getTT() == TrangThai::Trong)
                 {
                     p.setTT(TrangThai::CoKhach);
-                    cout << "Dat phong thanh cong. Phong " << ma << " da co khach\n";
+                    kh.datPhong(&p);
+                    cout << "Khach hang " << kh.getTen() << " dat phong thanh cong. Phong " << ma << " da co khach\n";
                 }
                 else if (p.getTT() == TrangThai::CoKhach)
                 {
@@ -461,7 +516,7 @@ public:
     }
 
     // Tra Phong
-    void traPhong()
+    void traPhong(KhachHang &kh)
     {
         int ma;
         cout << "Nhap ma phong can tra: ";
@@ -477,10 +532,17 @@ public:
             {
                 if (p.getTT() == TrangThai::CoKhach)
                 {
+                    if (!kh.coPhong(&p))
+                    {
+                        cout << "Khach hang nay khong dat phong nay\n";
+                        return;
+                    }
                     p.setTT(TrangThai::Trong);
                     double hoa_don = thoi_gian * p.getGia();
                     p.doanhThu(hoa_don);
                     cout << fixed << setprecision(0);
+                    cout << "\n===== HOA DON KHACH HANG =====\n";
+                    cout << "Ten khach: " << kh.getTen() << endl;
                     cout << "Phong " << ma << " da tra thanh cong.\n";
                     cout << "Hoa don: " << hoa_don << " VND\n";
                     cout << "Trang thai phong: Trong\n";
@@ -495,58 +557,241 @@ public:
         }
         cout << "Khong tim thay ma phong";
     }
+};
 
-    void menu()
+// Lop he thong
+class HeThong
+{
+private:
+    QuanlyKaraoke ql;
+    vector<KhachHang> dsKH;
+
+public:
+    void themKhach()
+    {
+        KhachHang Kh;
+        cin >> Kh;
+        dsKH.push_back(Kh);
+    }
+
+    // Danh sach khach hang
+    void hienthiKhachHang()
+    {
+        if (dsKH.empty())
+        {
+            cout << "Danh sach khach hang trong";
+            return;
+        }
+        cout << "\nDanh sach khach hang\n";
+        for (const auto &K : dsKH)
+        {
+            cout << K << endl;
+        }
+    }
+
+    // Tim khach theo ma
+    KhachHang *Khach(int ma)
+    {
+        for (auto &Kh : dsKH)
+        {
+            if (Kh.getMax() == ma)
+            {
+                return &Kh;
+            }
+        }
+        return nullptr;
+    }
+
+    // Khach dat phong
+    void KHDat()
+    {
+        int maKh;
+        cout << "Nhap ma khach hang: ";
+        cin >> maKh;
+
+        KhachHang *kh = Khach(maKh);
+        if (!kh)
+        {
+            cout << "Khong tim thay khach hang\n";
+            return;
+        }
+
+        ql.hienthiPhong();
+        ql.datPhong(*kh);
+    }
+
+    void KHTra()
+    {
+        int maKH;
+        cout << "Nhap ma khach hang: ";
+        cin >> maKH;
+
+        KhachHang *kh = Khach(maKH);
+        if (!kh)
+        {
+            cout << "Khong tim thay khach hang\n";
+            return;
+        }
+        ql.traPhong(*kh);
+    }
+
+    // ================== MENU QUẢN LÝ ==================
+    void menuQuanLy()
     {
         int chon;
         do
         {
-            cout << "\n========= MENU QUẢN LÝ KARAOKE =========\n";
+            cout << "\n===== MENU QUẢN LÝ KARAOKE =====\n";
             cout << "1. Thêm phòng\n";
             cout << "2. Sửa phòng\n";
             cout << "3. Xóa phòng\n";
             cout << "4. Hiển thị danh sách phòng\n";
-            cout << "5. Sắp xếp phòng theo doanh thu\n";
-            cout << "6. Tìm phòng có doanh thu cao nhất\n";
-            cout << "7. Tìm phòng có doanh thu thấp nhất\n";
-            cout << "8. Đặt phòng\n";
-            cout << "9. Trả phòng\n";
-            cout << "0. Thoát\n";
-            cout << "----------------------------------------\n";
-            cout << "Lựa chọn: ";
+            cout << "5. Sắp xếp theo doanh thu\n";
+            cout << "6. Phòng có doanh thu cao nhất\n";
+            cout << "7. Phòng có doanh thu thấp nhất\n";
+            cout << "0. Quay lại\n";
+            cout << "--------------------------------\n";
+            cout << "Chọn: ";
             cin >> chon;
 
             switch (chon)
             {
             case 1:
-                them();
+                ql.them();
                 break;
             case 2:
-                sua();
+                ql.sua();
                 break;
             case 3:
-                xoa();
+                ql.xoa();
                 break;
             case 4:
-                hienthiPhong();
+                ql.hienthiPhong();
                 break;
             case 5:
-                sapxep();
+                ql.sapxep();
                 break;
             case 6:
-                PhongMax();
+                ql.PhongMax();
                 break;
             case 7:
-                PhongMin();
-                break;
-            case 8:
-                datPhong();
-                break;
-            case 9:
-                traPhong();
+                ql.PhongMin();
                 break;
             case 0:
-                cout << "Thoát chương trình.\n";
+                cout << "Quay lại menu chính...\n";
+                break;
+            default:
+                cout << "Lựa chọn không hợp lệ!\n";
+            }
+        } while (chon != 0);
+    }
+
+    // ================== MENU KHÁCH HÀNG ==================
+    void menuKhachHang()
+    {
+        int chon;
+        do
+        {
+            cout << "\n===== MENU KHÁCH HÀNG =====\n";
+            cout << "1. Thêm khách hàng mới\n";
+            cout << "2. Đặt phòng\n";
+            cout << "3. Trả phòng\n";
+            cout << "4. Hiển thị danh sách khách hàng\n";
+            cout << "5. Hiển thị danh sach thuê phòng\n";
+            cout << "0. Quay lại\n";
+            cout << "----------------------------\n";
+            cout << "Chọn: ";
+            cin >> chon;
+
+            switch (chon)
+            {
+            case 1:
+                themKhach();
+                break;
+            case 2:
+            {
+                int maKH;
+                cout << "Nhập mã khách hàng: ";
+                cin >> maKH;
+                KhachHang *kh = Khach(maKH);
+                if (!kh)
+                {
+                    cout << "Không tìm thấy khách hàng!\n";
+                    break;
+                }
+                ql.hienthiPhong();
+                ql.datPhong(*kh);
+                break;
+            }
+            case 3:
+            {
+                int maKH;
+                cout << "Nhập mã khách hàng: ";
+                cin >> maKH;
+                KhachHang *kh = Khach(maKH);
+                if (!kh)
+                {
+                    cout << "Không tìm thấy khách hàng!\n";
+                    break;
+                }
+                ql.traPhong(*kh);
+                break;
+            }
+            case 4:
+                hienthiKhachHang();
+                break;
+            case 5:
+            {
+                cout << "\n=== DANH SÁCH KHÁCH HÀNG HIỆN CÓ ===\n";
+                hienthiKhachHang();
+                cout << "=====================================\n";
+
+                int maKH;
+                cout << "Nhập mã khách hàng cần xem phòng đang thuê: ";
+                cin >> maKH;
+
+                KhachHang *kh = Khach(maKH);
+                if (!kh)
+                {
+                    cout << "Không tìm thấy khách hàng!\n";
+                    break;
+                }
+                kh->hienthiPhongDangThue();
+                break;
+            }
+            case 0:
+                cout << "Quay lại menu chính...\n";
+                break;
+            default:
+                cout << "Lựa chọn không hợp lệ!\n";
+            }
+        } while (chon != 0);
+    }
+
+    // ================== MENU HỆ THỐNG CHÍNH ==================
+    void menu()
+    {
+        int chon;
+        do
+        {
+            cout << "\n========= HỆ THỐNG QUẢN LÝ KARAOKE =========\n";
+            cout << "1. KHÁCH HÀNG\n";
+            cout << "2. QUẢN LÝ QUÁN KARAOKE\n";
+            cout << "0. THOÁT\n";
+            cout << "--------------------------------------------\n";
+            cout << "Chọn: ";
+            cin >> chon;
+
+            switch (chon)
+            {
+            case 1:
+                menuKhachHang();
+                break;
+            case 2:
+                menuQuanLy();
+                break;
+            case 0:
+                cout << "Thoát hệ thống.\n";
                 break;
             default:
                 cout << "Lựa chọn không hợp lệ!\n";
@@ -557,7 +802,7 @@ public:
 
 int main()
 {
-    QuanlyKaraoke app;
+    HeThong app;
     app.menu();
     return 0;
 }
