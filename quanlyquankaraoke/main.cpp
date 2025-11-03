@@ -641,7 +641,7 @@ public:
         int chon;
         do
         {
-            cout << "\n===== MENU QUẢN LÝ KARAOKE =====\n";
+            cout << "\n===== MENU QUAN LY KARAOKE =====\n";
             cout << "1. Them phong\n";
             cout << "2. Sua phong\n";
             cout << "3. Xoa phong\n";
@@ -686,13 +686,13 @@ public:
         } while (chon != 0);
     }
 
-    // ================== MENU KHÁCH HÀNG ==================
+    // menu khach hang
     void menuKhachHang()
     {
         int chon;
         do
         {
-            cout << "\n===== MENU KHÁCH HÀNG =====\n";
+            cout << "\n===== MENU KHACH HANG =====\n";
             cout << "1. Them khach hang moi\n";
             cout << "2. Dat phong\n";
             cout << "3. Tra phong\n";
@@ -742,7 +742,7 @@ public:
                 break;
             case 5:
             {
-                cout << "\n=== DANH SÁCH KHÁCH HÀNG HIỆN CÓ ===\n";
+                cout << "\n=== DANH SACH KHACH HANG HIEN CO ===\n";
                 hienthiKhachHang();
                 cout << "=====================================\n";
 
@@ -768,13 +768,13 @@ public:
         } while (chon != 0);
     }
 
-    // ================== MENU HỆ THỐNG CHÍNH ==================
+    // menu he thong
     void menu()
     {
         int chon;
         do
         {
-            cout << "\n========= HỆ THỐNG QUẢN LÝ KARAOKE =========\n";
+            cout << "\n========= HE THONG QUAN LY KARAOKE =========\n";
             cout << "1. KHACH HANG\n";
             cout << "2. QUAN LY QUAN KARAOKE\n";
             cout << "0. THOAT\n";
