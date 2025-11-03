@@ -2,19 +2,19 @@
 #include <string>
 using namespace std;
 
-// ========================== CẤU TRÚC NÚT ==========================
+// Cau truc node
 struct Node
 {
     string tenKhach;
     Node *next;
 };
 
-// ========================== LỚP HÀNG ĐỢI ==========================
+// Lop hang doi
 class Queue
 {
 private:
-    Node *front; // con trỏ đầu hàng
-    Node *rear;  // con trỏ cuối hàng
+    Node *front; // con tro dau hang
+    Node *rear;  // con tro cuoi hang
 public:
     Queue()
     {
@@ -26,12 +26,12 @@ public:
         return front == nullptr;
     }
 
-    // Thêm khách vào hàng (enqueue)
+    // Them khach vao hang (enqueue)
     void enqueue(const string &ten)
     {
         Node *newNode = new Node{ten, nullptr};
         if (rear == nullptr)
-        { // hàng trống
+        { // hang trong
             front = rear = newNode;
         }
         else
@@ -39,34 +39,34 @@ public:
             rear->next = newNode;
             rear = newNode;
         }
-        cout << "✅ Đã thêm khách \"" << ten << "\" vào hàng đợi.\n";
+        cout << "Da them khach \"" << ten << "\" vao hang doi.\n";
     }
 
-    // Xử lý khách đầu tiên (dequeue)
+    // Xu ly khach dau tien (dequeue)
     void dequeue()
     {
         if (isEmpty())
         {
-            cout << "⚠️ Hàng đợi trống! Không có khách để xử lý.\n";
+            cout << "Hang doi trong! Khong co khach de xu ly.\n";
             return;
         }
         Node *temp = front;
-        cout << "🧾 Đang xử lý khách: " << front->tenKhach << endl;
+        cout << "Dang xu ly khach: " << front->tenKhach << endl;
         front = front->next;
         if (front == nullptr)
             rear = nullptr;
         delete temp;
     }
 
-    // Hiển thị hàng đợi
+    // Hien thi hang doi
     void display()
     {
         if (isEmpty())
         {
-            cout << "📭 Hàng đợi hiện đang trống.\n";
+            cout << "Hang doi hien dang trong.\n";
             return;
         }
-        cout << "\n📋 Danh sách khách trong hàng:\n";
+        cout << "\nDanh sach khach trong hang:\n";
         Node *temp = front;
         int i = 1;
         while (temp != nullptr)
@@ -76,7 +76,7 @@ public:
         }
     }
 
-    // Hủy hàng đợi
+    // Huy hang doi
     ~Queue()
     {
         while (!isEmpty())
@@ -84,7 +84,7 @@ public:
     }
 };
 
-// ========================== CHƯƠNG TRÌNH CHÍNH ==========================
+// ========================== CHUONG TRINH CHINH ==========================
 int main()
 {
     Queue hangDoi;
@@ -93,19 +93,19 @@ int main()
 
     do
     {
-        cout << "\n==== HÀNG ĐỢI SIÊU THỊ ====\n";
-        cout << "1. Thêm khách hàng vào hàng\n";
-        cout << "2. Xử lý khách tiếp theo\n";
-        cout << "3. Hiển thị hàng đợi hiện tại\n";
-        cout << "4. Thoát\n";
-        cout << "Chọn: ";
+        cout << "\n==== HANG DOI SIEU THI ====\n";
+        cout << "1. Them khach hang vao hang\n";
+        cout << "2. Xu ly khach tiep theo\n";
+        cout << "3. Hien thi hang doi hien tai\n";
+        cout << "4. Thoat\n";
+        cout << "Chon: ";
         cin >> chon;
-        cin.ignore(); // bỏ ký tự xuống dòng sau khi nhập số
+        cin.ignore();
 
         switch (chon)
         {
         case 1:
-            cout << "Nhập tên khách hàng: ";
+            cout << "Nhap ten khach hang: ";
             getline(cin, ten);
             hangDoi.enqueue(ten);
             break;
@@ -116,10 +116,10 @@ int main()
             hangDoi.display();
             break;
         case 4:
-            cout << "👋 Kết thúc chương trình.\n";
+            cout << "Ket thuc chuong trinh.\n";
             break;
         default:
-            cout << "⚠️ Lựa chọn không hợp lệ. Vui lòng chọn lại.\n";
+            cout << "Lua chon khong hop le. Vui long chon lai.\n";
         }
     } while (chon != 4);
 

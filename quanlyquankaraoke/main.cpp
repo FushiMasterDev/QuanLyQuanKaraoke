@@ -635,23 +635,23 @@ public:
         ql.traPhong(*kh);
     }
 
-    // ================== MENU QUẢN LÝ ==================
+    // Menu quan ly
     void menuQuanLy()
     {
         int chon;
         do
         {
             cout << "\n===== MENU QUẢN LÝ KARAOKE =====\n";
-            cout << "1. Thêm phòng\n";
-            cout << "2. Sửa phòng\n";
-            cout << "3. Xóa phòng\n";
-            cout << "4. Hiển thị danh sách phòng\n";
-            cout << "5. Sắp xếp theo doanh thu\n";
-            cout << "6. Phòng có doanh thu cao nhất\n";
-            cout << "7. Phòng có doanh thu thấp nhất\n";
-            cout << "0. Quay lại\n";
+            cout << "1. Them phong\n";
+            cout << "2. Sua phong\n";
+            cout << "3. Xoa phong\n";
+            cout << "4. Hien thi danh sach phong\n";
+            cout << "5. Sap xep theo doanh thu\n";
+            cout << "6. Phong co doanh thu cao nhat\n";
+            cout << "7. Phong co doanh thu thap nhat\n";
+            cout << "0. Quay lai\n";
             cout << "--------------------------------\n";
-            cout << "Chọn: ";
+            cout << "Chon: ";
             cin >> chon;
 
             switch (chon)
@@ -678,10 +678,10 @@ public:
                 ql.PhongMin();
                 break;
             case 0:
-                cout << "Quay lại menu chính...\n";
+                cout << "Quay lai menu chinh\n";
                 break;
             default:
-                cout << "Lựa chọn không hợp lệ!\n";
+                cout << "Lua chon khong hop le\n";
             }
         } while (chon != 0);
     }
@@ -693,14 +693,14 @@ public:
         do
         {
             cout << "\n===== MENU KHÁCH HÀNG =====\n";
-            cout << "1. Thêm khách hàng mới\n";
-            cout << "2. Đặt phòng\n";
-            cout << "3. Trả phòng\n";
-            cout << "4. Hiển thị danh sách khách hàng\n";
-            cout << "5. Hiển thị danh sach thuê phòng\n";
-            cout << "0. Quay lại\n";
+            cout << "1. Them khach hang moi\n";
+            cout << "2. Dat phong\n";
+            cout << "3. Tra phong\n";
+            cout << "4. Hien thi danh sach khach hang\n";
+            cout << "5. Hien thi phong thue\n";
+            cout << "0. Quay lai\n";
             cout << "----------------------------\n";
-            cout << "Chọn: ";
+            cout << "Chon: ";
             cin >> chon;
 
             switch (chon)
@@ -711,12 +711,12 @@ public:
             case 2:
             {
                 int maKH;
-                cout << "Nhập mã khách hàng: ";
+                cout << "Nhap ma khach hang: ";
                 cin >> maKH;
                 KhachHang *kh = Khach(maKH);
                 if (!kh)
                 {
-                    cout << "Không tìm thấy khách hàng!\n";
+                    cout << "Khong tim thay khach hang\n";
                     break;
                 }
                 ql.hienthiPhong();
@@ -726,12 +726,12 @@ public:
             case 3:
             {
                 int maKH;
-                cout << "Nhập mã khách hàng: ";
+                cout << "Nhap ma khach hang: ";
                 cin >> maKH;
                 KhachHang *kh = Khach(maKH);
                 if (!kh)
                 {
-                    cout << "Không tìm thấy khách hàng!\n";
+                    cout << "Khong tim thay khach hang\n";
                     break;
                 }
                 ql.traPhong(*kh);
@@ -747,23 +747,23 @@ public:
                 cout << "=====================================\n";
 
                 int maKH;
-                cout << "Nhập mã khách hàng cần xem phòng đang thuê: ";
+                cout << "Nhap ma khach hang can xem phong dang thue: ";
                 cin >> maKH;
 
                 KhachHang *kh = Khach(maKH);
                 if (!kh)
                 {
-                    cout << "Không tìm thấy khách hàng!\n";
+                    cout << "Khong tim thay khach hang\n";
                     break;
                 }
                 kh->hienthiPhongDangThue();
                 break;
             }
             case 0:
-                cout << "Quay lại menu chính...\n";
+                cout << "Quay lai menu chinh\n";
                 break;
             default:
-                cout << "Lựa chọn không hợp lệ!\n";
+                cout << "Lua chon khong hop le!\n";
             }
         } while (chon != 0);
     }
@@ -775,11 +775,11 @@ public:
         do
         {
             cout << "\n========= HỆ THỐNG QUẢN LÝ KARAOKE =========\n";
-            cout << "1. KHÁCH HÀNG\n";
-            cout << "2. QUẢN LÝ QUÁN KARAOKE\n";
-            cout << "0. THOÁT\n";
+            cout << "1. KHACH HANG\n";
+            cout << "2. QUAN LY QUAN KARAOKE\n";
+            cout << "0. THOAT\n";
             cout << "--------------------------------------------\n";
-            cout << "Chọn: ";
+            cout << "Chon: ";
             cin >> chon;
 
             switch (chon)
@@ -791,10 +791,10 @@ public:
                 menuQuanLy();
                 break;
             case 0:
-                cout << "Thoát hệ thống.\n";
+                cout << "Thoat\n";
                 break;
             default:
-                cout << "Lựa chọn không hợp lệ!\n";
+                cout << "Lua chon khong hop le\n";
             }
         } while (chon != 0);
     }
