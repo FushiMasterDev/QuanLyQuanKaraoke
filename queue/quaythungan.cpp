@@ -1,73 +1,82 @@
 #include <iostream>
-#include <string>
 using namespace std;
 
-// Cau truc node
+// Cau truc Node
 struct Node
 {
     string tenKhach;
     Node *next;
 };
 
+typedef struct Node *node;
+// Tao Node moi
+node makeNode(string ten)
+{
+    node tmp = new Node();
+    tmp->tenKhach = ten;
+    tmp->next = NULL;
+    return tmp;
+}
+
 // Lop hang doi
 class Queue
 {
 private:
-    Node *front; // con tro dau hang
-    Node *rear;  // con tro cuoi hang
+    Node *first;
+    Node *last;
+
 public:
     Queue()
     {
-        front = rear = nullptr;
+        first = last = NULL;
+    }
+    bool empty()
+    {
+        return first == NULL;
     }
 
-    bool isEmpty()
+    // Them khach hang
+    void add(string ten)
     {
-        return front == nullptr;
-    }
-
-    // Them khach vao hang (enqueue)
-    void enqueue(const string &ten)
-    {
-        Node *newNode = new Node{ten, nullptr};
-        if (rear == nullptr)
-        { // hang trong
-            front = rear = newNode;
+        node tmp = makeNode(ten);
+        if (empty())
+        {
+            first = last = tmp;
         }
         else
         {
-            rear->next = newNode;
-            rear = newNode;
+            last->next = tmp;
+            last = tmp;
+            cout << "Da them khach " << ten << " vao hang doi.\n";
         }
-        cout << "Da them khach \"" << ten << "\" vao hang doi.\n";
     }
 
-    // Xu ly khach dau tien (dequeue)
+    // Xu li khach hang
     void dequeue()
     {
-        if (isEmpty())
+        if (empty())
         {
-            cout << "Hang doi trong! Khong co khach de xu ly.\n";
+            cout << "Hang doi trong. Khong co khach de xu li";
             return;
         }
-        Node *temp = front;
-        cout << "Dang xu ly khach: " << front->tenKhach << endl;
-        front = front->next;
-        if (front == nullptr)
-            rear = nullptr;
+        node temp = first;
+        cout << "Dang xu li khach " << first->tenKhach << endl;
+        first = first->next;
+        if (first == NULL)
+            last = NULL;
         delete temp;
     }
 
-    // Hien thi hang doi
+    // Hien thi danh sach hang doi
     void display()
     {
-        if (isEmpty())
+        if (empty())
         {
             cout << "Hang doi hien dang trong.\n";
             return;
         }
         cout << "\nDanh sach khach trong hang:\n";
-        Node *temp = front;
+        node temp = first;
         int i = 1;
         while (temp != nullptr)
         {
@@ -79,12 +88,11 @@ public:
     // Huy hang doi
     ~Queue()
     {
-        while (!isEmpty())
+        while (!empty())
             dequeue();
     }
 };
 
-// ========================== CHUONG TRINH CHINH ==========================
 int main()
 {
     Queue hangDoi;
@@ -107,7 +115,7 @@ int main()
         case 1:
             cout << "Nhap ten khach hang: ";
             getline(cin, ten);
-            hangDoi.enqueue(ten);
+            hangDoi.add(ten);
             break;
         case 2:
             hangDoi.dequeue();
